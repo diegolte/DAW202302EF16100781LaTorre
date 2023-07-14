@@ -25,11 +25,36 @@
 import axios from "axios";
 export default {
   data() {
-    return {};
+    return {
+      email: "",
+      password: "",
+    };
   },
   methods: {
     Login() {
-      this.$router.push("/Dashboard/Activity");
+      axios
+        .post("https://api-gil.onrender.com/api/v1/userauthentications/login", {
+          Email: this.email,
+          Password: this.password,
+        })
+        .then((response) => {
+          this.$router.push("/Dashboard/Activity");
+          this.$q.notify({
+            message: "Inicio de sesión exitoso",
+            color: "positive",
+            position: "top",
+            timeout: 3000,
+          });
+        })
+        .catch((error) => {
+          console.error("Error de inicio de sesión:", error);
+          this.$q.notify({
+            message: "Credenciales inválidas",
+            color: "negative",
+            position: "top",
+            timeout: 3000,
+          });
+        });
     },
     Register() {
       this.$router.push("/Register");
